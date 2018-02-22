@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: dokuwiki.amineat.com
+  labels:
+    app: dokuwiki
+spec:
+  replicas: 2
+  selector:         #use selector to connect LB to Pod
+    app: dokuwiki-rc
+  template:
+    metadata:
+      labels:
+        app: dokuwiki-rc
+    spec:
+      containers:
+      - name: wiki
+        image: amineat/dokuwiki:v1
+        ports:
+        - name: dokulb
+          containerPort: 80
+      nodeSelector:
+        doku: dokuwiki
